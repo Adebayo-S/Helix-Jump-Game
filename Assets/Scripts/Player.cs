@@ -29,7 +29,7 @@ public class Player : MonoBehaviour
             GameManager.gameOver = true;
             FindObjectOfType<AudioManager>().Play("game over");
 
-        } else if (materialName == "LastRing (Instance)")
+        } else if (materialName == "LastRing (Instance)" && !GameManager.levelCompleted)
         {
             GameManager.levelCompleted = true;
             audioManager.Play("win level");
