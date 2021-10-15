@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI currentLevelText;
     public TextMeshProUGUI nextLevelText;
     public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI highScoreText;
 
     public static int numberOfPassedRings;
     public static int score = 0;
@@ -39,6 +40,7 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = 1;
         numberOfPassedRings = 0;
+        highScoreText.text = "Best Score\n" + PlayerPrefs.GetInt("HighScore", 0);
         isGameStarted = gameOver = levelCompleted = false;
     }
 
@@ -55,9 +57,10 @@ public class GameManager : MonoBehaviour
 
         scoreText.text = score.ToString();
 
-        if(Input.GetMouseButtonDown(0) && !isGameStarted)
+        if(Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began && !isGameStarted)
         {
-            if (EventSystem.current.IsPointerOverGameObject())
+            
+            if (EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId))
             {
                 return;
             }
@@ -74,6 +77,10 @@ public class GameManager : MonoBehaviour
 
             if (Input.GetButtonDown("Fire1"))
             {
+                if(score > PlayerPrefs.GetInt("HighScore", 0))
+                {
+                    PlayerPrefs.SetInt("HighScore", score);
+                }
                 score = 0;
                 SceneManager.LoadScene("Level1");
             }
